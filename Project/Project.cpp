@@ -7,12 +7,14 @@ main()
     int totalTasks = 100;
     int count = 5;
     int employeeCount = 2;
+    int notesNumber = 0;
 
     string tasks[totalTasks] = {" ", "EditVideo", "LogoDesign", "SetupPC_OS", "Testing_OS"};
     string titleA[totalTasks] = {" ", "Market", "Brand", "IT", "QA"};
     int deadlineA[totalTasks] = {0, 12, 3, 20, 2};
     string priorityA[totalTasks] = {" ", "Medium", "High", "Low", "null"};
-    string statusA[totalTasks] = {" ", "InProgress", "Pending", "Done", "Pending"};
+    string statusA[totalTasks] = {" ", "InProgress", "Pending", "Completed", "Pending"};
+    string notesA[totalTasks] = {" ","do it on C++"};
     string employees[10] = {" ", "Muhammad", "Shoaib", "Saleem"};
 
     int assignedTo[totalTasks] = {0, 1, 2, 1, 2};
@@ -72,7 +74,9 @@ main()
                             cout << "7.Assign Project\n";
                             cout << "8.Add Employee\n";
                             cout << "9.View Employee list\n";
-                            cout << "10.Exit\n";
+                            cout << "10.Add/Update notes\n";
+                            cout << "11.View Notes\n";
+                            cout << "12.Exit\n";
                             cout << "Select an option (1 - 9): ";
 
                             cin >> managerOption;
@@ -347,8 +351,53 @@ main()
                                 cout << "Press any key to continue! ";
                                 getch();
                             }
-
                             else if (managerOption == 10)
+                            {
+
+                                cout << "Select Project you wanna add or update note of: \n";
+
+                                cout << "Sr\tName\tDeadline(in weeks)\tTask\t\tPriority\tStatus\t\tNOTE\n";
+                                for (int i = 1; i < count; i++)
+                                {
+                                    if (deadlineA[i] != 0)
+                                    {
+                                        cout << i << "\t" << titleA[i] << "\t\t" << deadlineA[i] << "\t\t" << tasks[i] << "\t" << priorityA[i] << "\t\t" << statusA[i] << "\t" << notesA[i] << endl;
+                                    }
+                                }
+                                int select;
+                                cout << "Select Project: ";
+                                cin >> select;
+
+                                cout << "\n";
+
+                                cout << "Enter details about Note to Update: \n";
+                                cout << "Enter Note: ";
+                                cin.ignore();
+                                getline(cin, notesA[select]);
+                                notesNumber++;
+
+                                cout << "NOTE ADDED SUCCESSFULLY!\n";
+                                cout << "Press any key to continue\n";
+                                getch();
+                            }
+                            else if (managerOption == 11)
+                            {
+                                cout << "Different Notes added with project are: \n";
+
+                                cout << "Sr\tName\tDeadline(in weeks)\t\tNOTE\n";
+                                for (int i = 1; i < count; i++)
+                                {
+                                    if (deadlineA[i] != 0)
+                                    {
+                                        cout << i << "\t" << titleA[i] << "\t\t" << deadlineA[i] << "\t\t\t" << notesA[i] << endl;
+                                    }
+                                }
+
+                                cout << "Press any key to continue!";
+                                getch();
+                            }
+
+                            else if (managerOption == 12)
                             {
                                 break;
                             }
@@ -394,7 +443,10 @@ main()
                 cout << "4.View Deadlines\n";
                 cout << "5.Search task\n";
                 cout << "6.Show Number of projects\n";
-                cout << "7.Exit\n";
+                cout << "7.View Completed Tasks\n";
+                cout << "8.View Pending Tasks\n";
+                cout << "9.View Added Notes\n";
+                cout << "10.Exit\n";
 
                 cout << "Select option (1-7): ";
 
@@ -520,17 +572,90 @@ main()
                 else if (employeOption == 6)
                 { // Number of tasks
                     int tasksNumber;
-                    for(int i = 0; i<count; i++){
-                        if(assignedTo[i] == employeeSelect){
+                    for (int i = 0; i < count; i++)
+                    {
+                        if (assignedTo[i] == employeeSelect)
+                        {
                             tasksNumber++;
                         }
                     }
-                    cout<<"The number of tasks assigned to you are: "<<tasksNumber<<endl;
-                    cout<<"Press any key to continue!";
+                    cout << "The number of tasks assigned to you are: " << tasksNumber << endl;
+                    cout << "Press any key to continue!";
                     getch();
                     tasksNumber = 0;
-                    
-                }else if (employeOption == 7)
+                }
+                else if (employeOption == 7)
+                {
+                    int completedTasks = 0;
+                    cout << "Sr\tName\tDeadline(in weeks)\tTask\t\tPriority\tStatus\n";
+                    for (int i = 1; i < count; i++)
+                    {
+                        if (assignedTo[i] == employeeSelect)
+                        {
+                            if (statusA[i] == "Completed" || statusA[i] == "completed" || statusA[i] == "complete" || statusA[i] == "Complete" || statusA[i] == "done" || statusA[i] == "Done")
+                            {
+                                if (deadlineA[i] != 0)
+                                {
+
+                                    cout << i << "\t" << titleA[i] << "\t\t" << deadlineA[i] << "\t\t" << tasks[i] << "\t" << priorityA[i] << "\t\t" << statusA[i] << endl;
+                                    completedTasks++;
+                                }
+                            }
+                        }
+                    }
+                    if (completedTasks == 0)
+                    {
+                        cout << "No Completed Projects Found!\n";
+                    }
+                    cout << "press any key to continue!";
+                    getch();
+                }
+                else if (employeOption == 8)
+                {
+                    int PendingTasks = 0;
+                    cout << "Sr\tName\tDeadline(in weeks)\tTask\t\tPriority\tStatus\n";
+                    for (int i = 1; i < count; i++)
+                    {
+                        if (assignedTo[i] == employeeSelect)
+                        {
+                            if (statusA[i] == "Pending" || statusA[i] == "Working" || statusA[i] == "InProgress" || statusA[i] == "pending" || statusA[i] == "inprogress" || statusA[i] == "in progress")
+                            {
+                                if (deadlineA[i] != 0)
+                                {
+
+                                    cout << i << "\t" << titleA[i] << "\t\t" << deadlineA[i] << "\t\t" << tasks[i] << "\t" << priorityA[i] << "\t\t" << statusA[i] << endl;
+                                    PendingTasks++;
+                                }
+                            }
+                        }
+                    }
+                    if (PendingTasks == 0)
+                    {
+                        cout << "No Completed Projects Found!\n";
+                    }
+                    cout << "press any key to continue!";
+                    getch();
+                }
+                else if (employeOption == 9)
+                {
+                    cout << "Different Notes added with project are: \n";
+
+                    cout << "Sr\tName\tDeadline(in weeks)\t\tNOTE\n";
+                    for (int i = 1; i < count; i++)
+                    {
+                        if (assignedTo[i] == employeeSelect)
+                        {
+                            if (deadlineA[i] != 0)
+                            {
+                                cout << i << "\t" << titleA[i] << "\t\t" << deadlineA[i] << "\t\t\t" << notesA[i] << endl;
+                            }
+                        }
+                    }
+
+                    cout << "Press any key to continue!";
+                    getch();
+                }
+                else if (employeOption == 10)
                 {
                     break;
                 }
@@ -540,7 +665,8 @@ main()
         {
             // Program Ends
             cout << "Program Ended\n";
-            cout << "Thanks for using this Program.\n";
+            cout << "Thanks for using Project Management System.\n";
+            cout << "HOPE YOU ENJOY YOUR DAY :)\n";
             cout << "Press any key to continue!";
             getch();
             break;
